@@ -1,9 +1,9 @@
 # API 명세서
 ## 등록 api
-url : /api/schedules
-method : POST
-비밀번호 인증 : X
-request body :
+- url : /api/schedules
+- method : POST
+- 비밀번호 인증 : X
+- request body :
 [
 {
     "user": "홍길동",
@@ -12,7 +12,7 @@ request body :
     "date": "YYYY-MM-DD HH:MM:SS"
 }
 ]
-response body :
+- response body :
 [
 {
     "id": 1,
@@ -21,20 +21,20 @@ response body :
     "date": "YYYY-MM-DD HH:MM:SS"
 }
 ]
-status code : 200
+- status code : 200
 
 ## 전체 조회 api
-url : /api/schedules
-method : GET
-비밀번호 인증 : X
-request body :
+- url : /api/schedules 
+- method : GET 
+- 비밀번호 인증 : X 
+- request body :
 [
 {
     "user": "홍길동",
     "date": "YYYY-MM-DD HH:MM:SS"
 }
 ]
-response body : 
+- response body : 
 [
 {
     "id": 1,
@@ -51,16 +51,16 @@ response body :
 ]
 
 ## 단일 조회 api
-url : /api/schedules/{id}
-method : GET
-비밀번호 인증 : X
-request body :
+- url : /api/schedules/{id} 
+- method : GET 
+- 비밀번호 인증 : X 
+- request body :
 [
 {
     "id": 1
 }
 ]
-response body :
+- response body :
 [
 {
     "id": 1,
@@ -71,10 +71,10 @@ response body :
 ]
 
 ## 수정 api
-url : /api/schedules/{id}
-method : PUT
-비밀번호 인증 : O
-request body :
+- url : /api/schedules/{id} 
+- method : PUT 
+- 비밀번호 인증 : O 
+- request body :
 [
 {
     "user": "홍길동",
@@ -82,7 +82,7 @@ request body :
     "password": "1234"
 }
 ]
-response body :
+- response body :
 [
 {
     "id": 1,
@@ -99,16 +99,16 @@ response body :
 ]
 
 ## 삭제 api
-url : /api/schedules/{id}
-method : DELETE
-비밀번호 인증 : O
-request body :
+- url : /api/schedules/{id} 
+- method : DELETE 
+- 비밀번호 인증 : O 
+- request body :
 [
 {
     "password": "1234"
 }
 ]
-response body :
+- response body :
 [
 {
     "status": "success",
