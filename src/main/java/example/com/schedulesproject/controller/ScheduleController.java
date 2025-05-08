@@ -47,6 +47,13 @@ public class ScheduleController {
         return new ScheduleResponseDto(schedule);
     }
 
+    // 삭제 기능
+    @DeleteMapping("{/id}")
+    public void deleteSchedule (
+            @PathVariable Long id
+    ) {
+        ScheduleList.remove(id);
+    }
 
 
 }
