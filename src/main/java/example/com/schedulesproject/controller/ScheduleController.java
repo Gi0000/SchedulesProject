@@ -3,6 +3,8 @@ package example.com.schedulesproject.controller;
 import example.com.schedulesproject.dto.ScheduleRequestDto;
 import example.com.schedulesproject.dto.ScheduleResponseDto;
 import example.com.schedulesproject.entity.Schedule;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -14,15 +16,16 @@ import java.util.Map;
 public class ScheduleController {
     private final Map<Long, Schedule> ScheduleList = new HashMap<>();
 
+    // 생성 기능
     @PostMapping
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto requestDto) {
         Long scheduleId = ScheduleList.isEmpty() ? 1 : Collections.max(ScheduleList.keySet()) + 1;
 
         Schedule schedule = new Schedule(scheduleId, requestDto.getUser(), requestDto.getTodo(), requestDto.getPassword(), requestDto.getDate());
 
         ScheduleList.put(scheduleId, schedule);
 
-        return new ScheduleResponseDto(schedule);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.CREATED);
     }
 
     // 단일 조회
@@ -49,9 +52,7 @@ public class ScheduleController {
 
     // 삭제 기능
     @DeleteMapping("{/id}")
-    public void deleteSchedule (
-            @PathVariable Long id
-    ) {
+    public void deleteSchedule ( @PathVariable Long id ) {
         ScheduleList.remove(id);
     }
 
