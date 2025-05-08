@@ -3,10 +3,7 @@ package example.com.schedulesproject.controller;
 import example.com.schedulesproject.dto.ScheduleRequestDto;
 import example.com.schedulesproject.dto.ScheduleResponseDto;
 import example.com.schedulesproject.entity.Schedule;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,5 +24,13 @@ public class ScheduleController {
 
         return new ScheduleResponseDto(schedule);
     }
+
+    // 단일 조회
+    @GetMapping("/{id}")
+    public ScheduleResponseDto findScheduleById(@PathVariable Long id) {
+        Schedule schedule = ScheduleList.get(id);
+        return new ScheduleResponseDto(schedule);
+    }
+
 
 }
