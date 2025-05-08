@@ -11,7 +11,7 @@ public class Schedule {
     private String user;
     private String todo;
     private String password;
-    private String date;
+    private String createDate;
 
     public void update(ScheduleRequestDto requestDto) {
         if (requestDto.getUser() != null) {
