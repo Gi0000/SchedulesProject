@@ -1,5 +1,6 @@
 package example.com.schedulesproject.entity;
 
+import example.com.schedulesproject.dto.ScheduleRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +13,8 @@ public class Schedule {
     private String password;
     private String date;
 
+    public void update(ScheduleRequestDto requestDto) {
+        this.user = requestDto.getUser();
+        this.todo = requestDto.getTodo();
+    }
 }

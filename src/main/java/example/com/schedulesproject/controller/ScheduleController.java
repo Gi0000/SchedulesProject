@@ -32,5 +32,21 @@ public class ScheduleController {
         return new ScheduleResponseDto(schedule);
     }
 
+    //todo 전체 조회 기능 구현
+
+    // 수정 기능
+    @PatchMapping("{/id}")
+    public ScheduleResponseDto updateScheduleById(
+            @PathVariable Long id,
+            @RequestBody ScheduleRequestDto requestDto
+    ) {
+        Schedule schedule = ScheduleList.get(id);
+
+        schedule.update(requestDto);
+
+        return new ScheduleResponseDto(schedule);
+    }
+
+
 
 }
