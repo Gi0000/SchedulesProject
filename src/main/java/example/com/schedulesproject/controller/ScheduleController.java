@@ -53,15 +53,22 @@ public class ScheduleController {
 
     // 수정 기능
     @PatchMapping("{/id}")
-    public ScheduleResponseDto updateScheduleById(
+    public ResponseEntity<ScheduleResponseDto> updateScheduleById(
             @PathVariable Long id,
             @RequestBody ScheduleRequestDto requestDto
     ) {
         Schedule schedule = ScheduleList.get(id);
 
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (requestDto.getUser() == null || requestDto.getTodo() != null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         schedule.update(requestDto);
 
-        return new ScheduleResponseDto(schedule);
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
 
     // 삭제 기능
