@@ -42,9 +42,12 @@ public class ScheduleController {
 
     // 단일 조회
     @GetMapping("/{id}")
-    public ScheduleResponseDto findScheduleById(@PathVariable Long id) {
+    public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id) {
         Schedule schedule = ScheduleList.get(id);
-        return new ScheduleResponseDto(schedule);
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
 
 
