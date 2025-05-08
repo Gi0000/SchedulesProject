@@ -26,7 +26,7 @@ public class ScheduleController {
         return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.CREATED);
     }
 
-    //todo 전체 조회 기능 구현
+    //전체 조회 기능
     @GetMapping
     public List<ScheduleResponseDto> findAllSchedules() {
         List<ScheduleResponseDto> responseList = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ScheduleController {
     }
 
 
-    // 단일 조회
+    // 단일 조회 기능
     @GetMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id) {
         Schedule schedule = ScheduleList.get(id);
@@ -52,7 +52,7 @@ public class ScheduleController {
 
 
     // 수정 기능
-    @PatchMapping("{/id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ScheduleResponseDto> updateScheduleById(
             @PathVariable Long id,
             @RequestBody ScheduleRequestDto requestDto
@@ -62,8 +62,11 @@ public class ScheduleController {
         if (schedule == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (requestDto.getUser() == null || requestDto.getTodo() != null) {
+        if (requestDto.getPassword() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (!schedule.getPassword().equals(requestDto.getPassword())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);  // 401: 비밀번호 불일치
         }
 
         schedule.update(requestDto);
@@ -72,15 +75,24 @@ public class ScheduleController {
     }
 
     // 삭제 기능
-    @DeleteMapping("{/id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
-        if (ScheduleList.containsKey(id)) {
-            ScheduleList.remove(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSchedule(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> passwordRequest
+    ) {
+        Schedule schedule = ScheduleList.get(id);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+        if (schedule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        String password = passwordRequest.get("password");
+        if (password == null || !schedule.getPassword().equals(password)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        ScheduleList.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

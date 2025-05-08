@@ -14,7 +14,11 @@ public class Schedule {
     private String date;
 
     public void update(ScheduleRequestDto requestDto) {
-        this.user = requestDto.getUser();
-        this.todo = requestDto.getTodo();
+        if (requestDto.getUser() != null) {
+            this.user = requestDto.getUser();
+        }
+        if (requestDto.getTodo() != null) {
+            this.todo = requestDto.getTodo();
+        }
     }
 }
