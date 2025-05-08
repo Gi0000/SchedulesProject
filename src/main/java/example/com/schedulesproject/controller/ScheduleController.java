@@ -7,9 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/schedules")
@@ -28,6 +26,20 @@ public class ScheduleController {
         return new ResponseEntity<>(new ScheduleResponseDto(schedule), HttpStatus.CREATED);
     }
 
+    //todo 전체 조회 기능 구현
+    @GetMapping
+    public List<ScheduleResponseDto> findAllSchedules() {
+        List<ScheduleResponseDto> responseList = new ArrayList<>();
+
+        for (Schedule schedule : ScheduleList.values()) {
+            ScheduleResponseDto responseDto = new ScheduleResponseDto(schedule);
+            responseList.add(responseDto);
+        }
+
+        return responseList;
+    }
+
+
     // 단일 조회
     @GetMapping("/{id}")
     public ScheduleResponseDto findScheduleById(@PathVariable Long id) {
@@ -35,7 +47,6 @@ public class ScheduleController {
         return new ScheduleResponseDto(schedule);
     }
 
-    //todo 전체 조회 기능 구현
 
     // 수정 기능
     @PatchMapping("{/id}")
