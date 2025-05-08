@@ -73,8 +73,14 @@ public class ScheduleController {
 
     // 삭제 기능
     @DeleteMapping("{/id}")
-    public void deleteSchedule ( @PathVariable Long id ) {
-        ScheduleList.remove(id);
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
+        if (ScheduleList.containsKey(id)) {
+            ScheduleList.remove(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
