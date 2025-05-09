@@ -3,10 +3,12 @@ package example.com.schedulesproject.controller;
 import example.com.schedulesproject.dto.ScheduleRequestDto;
 import example.com.schedulesproject.dto.ScheduleResponseDto;
 import example.com.schedulesproject.entity.Schedule;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -19,7 +21,14 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto requestDto) {
         Long scheduleId = ScheduleList.isEmpty() ? 1 : Collections.max(ScheduleList.keySet()) + 1;
 
-        Schedule schedule = new Schedule(scheduleId, requestDto.getUser(), requestDto.getTodo(), requestDto.getPassword(), requestDto.getCreateDate());
+        Schedule schedule = new Schedule(
+                scheduleId,
+                requestDto.getUser(),
+                requestDto.getTodo(),
+                requestDto.getPassword(),
+                LocalDateTime.now(),
+                LocalDateTime.now()
+        );
 
         ScheduleList.put(scheduleId, schedule);
 
