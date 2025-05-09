@@ -128,4 +128,4 @@
 - FAIL STATUS CODE : 401 Unauthorized
 
 # ERD
-![스크린샷 2025-05-09 15.43.28.png](..%2F..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F1r%2Fstvk2ptx0sx7pr8lf86_7f6r0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_6QeJhf%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-09%2015.43.28.png)
+![img.png](img.png)
