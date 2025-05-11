@@ -7,18 +7,18 @@
 {
     "user": "홍길동",
     "todo": "마케팅 회의 진행",
-    "password": "1234",
-    "date": "YYYY-MM-DD HH:MM:SS"
+    "password": "1234"
 }
 ```
 
 - response body :
 ```json
 {
-    "id": 1,
-    "user": "홍길동",
-    "todo": "마케팅 회의 진행",
-    "date": "YYYY-MM-DD HH:MM:SS"
+  "userId": "홍길동",
+  "todo": "마케팅 회의 진행",
+  "createDate": "YYYY-MM-DD HH:MM:SS",
+  "updateDate": "YYYY-MM-DD HH:MM:SS",
+  "scheduleId": (id)
 }
 ```
 - status code : 201 CREATED
@@ -26,26 +26,21 @@
 ## 전체 조회 api
 - url : /api/schedules 
 - method : GET
-- request body :
-```json
-{
-    "user": "홍길동",
-    "date": "YYYY-MM-DD HH:MM:SS"
-}
-```
 - response body :
 ```json
 {
-    "id": 1,
-    "user": "홍길동",
-    "todo": "마케팅 회의 진행",
-    "date": "YYYY-MM-DD HH:MM:SS"
+  "userId": "name1",
+  "todo": "work1",
+  "createDate": "YYYY-MM-DD HH:MM:SS",
+  "updateDate": "YYYY-MM-DD HH:MM:SS",
+  "scheduleId": (id)
 },
 {
-    "id": 2,
-    "user": "홍길동",
-    "todo": "개발 일정 마무리",
-    "date": "YYYY-MM-DD HH:MM:SS"
+  "userId": "name2",
+  "todo": "work2",
+  "createDate": "YYYY-MM-DD HH:MM:SS",
+  "updateDate": "YYYY-MM-DD HH:MM:SS",
+  "scheduleId": (id)
 }
 ```
 - STATUS CODE : 200 OK
@@ -53,19 +48,14 @@
 ## 단일 조회 api
 - url : /api/schedules/{id} 
 - method : GET
-- request body :
-```json
-{
-    "id": 1
-}
-```
 - response body :
 ```json
 {
-    "id": 1,
-    "user": "홍길동",
-    "todo": "마케팅 회의 진행",
-    "date": "YYYY-MM-DD HH:MM:SS"
+  "userId": "user",
+  "todo": "work",
+  "createDate": "YYYY-MM-DD HH:MM:SS",
+  "updateDate": "YYYY-MM-DD HH:MM:SS",
+  "scheduleId": (id)
 }
 ```
 - STATUS CODE : 200 OK
@@ -85,19 +75,14 @@
 - response body :
 ```json
 {
-    "id": 1,
-    "user": "홍길동",
-    "todo": "수정된 회의 내용",
-    "re-date": "YYYY-MM-DD HH:MM:SS"
+  "userId": "홍길동",
+  "todo": "수정된 회의 내용",
+  "createDate": "YYYY-MM-DD HH:MM:SS",
+  "updateDate": "YYYY-MM-DD HH:MM:SS",
+  "scheduleId": (id)
 }
 ```
 - STATUS CODE : 200 OK
-```json
-{
-    "status": "fail",
-    "message": "비밀번호가 일치하지 않습니다."
-}
-```
 - FAIL STATUS CODE : 401 Unauthorized
 
 
@@ -111,21 +96,9 @@
     "password": "1234"
 }
 ```
-- response body :
-```json
-{
-    "status": "success",
-    "message": "일정이 성공적으로 삭제되었습니다."
-}
-```
 - STATUS CODE : 200 OK
-```json
-{
-    "status": "fail",
-    "message": "비밀번호가 일치하지 않습니다."
-}
-```
 - FAIL STATUS CODE : 401 Unauthorized
+- FAIL STATUS CODE : 404 NOT FOUND
 
 # ERD
 ![img.png](img.png)
