@@ -5,10 +5,13 @@ import example.com.schedulesproject.dto.ScheduleResponseDto;
 import example.com.schedulesproject.entity.Schedule;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
 
     @Override
     public List<ScheduleResponseDto> findAllSchedules() {
-        return null;
+        return jdbcTemplate.query("select * from schedule", scheduleRowMapper());
     }
 
     @Override
@@ -63,5 +66,20 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
     @Override
     public ResponseEntity deleteScheduleById(Long id, Map<String, String> passwordRequest) {
         return null;
+    }
+
+    private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
+        return new RowMapper<ScheduleResponseDto>() {
+            @Override
+            public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new ScheduleResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("user"),
+                        rs.getString("todo"),
+                        rs.getTimestamp("createDate").toLocalDateTime(),
+                        rs.getTimestamp("updateDate").toLocalDateTime()
+                );
+            }
+        };
     }
 }
