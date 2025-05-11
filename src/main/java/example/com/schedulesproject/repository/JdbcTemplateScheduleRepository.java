@@ -63,7 +63,23 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
 
     @Override
     public ResponseEntity updateScheduleById(Long id, ScheduleRequestDto requestDto) {
-        return null;
+        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV3(), id);
+        Optional<Schedule> optionalSchedule = result.stream().findAny();
+
+        if (optionalSchedule.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if (requestDto.getPassword() == null || !requestDto.getPassword().equals(optionalSchedule.get().getPassword())) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        Schedule schedule = optionalSchedule.get();
+        schedule.update(requestDto);
+
+        String sql = "UPDATE schedule SET user = ?, todo = ?, updateDate = ? WHERE id = ?";
+        jdbcTemplate.update(sql, schedule.getUserId(), schedule.getTodo(), schedule.getUpdateDate(), id);
+
+        return new ResponseEntity(new ScheduleResponseDto(schedule), HttpStatus.OK);
     }
 
     @Override
