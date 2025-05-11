@@ -3,6 +3,7 @@ package example.com.schedulesproject.repository;
 import example.com.schedulesproject.dto.ScheduleRequestDto;
 import example.com.schedulesproject.dto.ScheduleResponseDto;
 import example.com.schedulesproject.entity.Schedule;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -67,7 +68,24 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
 
     @Override
     public ResponseEntity deleteScheduleById(Long id, Map<String, String> passwordRequest) {
-        return null;
+        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV3(), id);
+        Optional<Schedule> optionalSchedule = result.stream().findAny();
+
+        if(optionalSchedule.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        Schedule schedule = optionalSchedule.get();
+
+        String password = passwordRequest.get("password");
+        if (password == null || schedule.getPassword() == null || !schedule.getPassword().equals(password)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        String sql = "delete from schedule where id = ?";
+        jdbcTemplate.update(sql, id);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
@@ -99,4 +117,22 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
             }
         };
     }
+
+    // 삭제 api 구현 시 비밀번호 까지 가져오는 RowMapper
+    private RowMapper<Schedule> scheduleRowMapperV3() {
+        return new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Schedule(
+                        rs.getLong("id"),
+                        rs.getString("user"),
+                        rs.getString("todo"),
+                        rs.getTimestamp("createDate").toLocalDateTime(),
+                        rs.getTimestamp("updateDate").toLocalDateTime(),
+                        rs.getString("password")
+                );
+            }
+        };
+    }
+
 }
