@@ -7,13 +7,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ScheduleRepository {
     ScheduleResponseDto saveSchedule(Schedule schedule);
 
     List<ScheduleResponseDto> findAllSchedules();
 
-    ResponseEntity findScheduleById(Long id);
+    Optional<Schedule> findScheduleById(Long id);
 
     ResponseEntity updateScheduleById(Long id, ScheduleRequestDto requestDto);
 

@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class JdbcTemplateScheduleRepository implements ScheduleRepository{
@@ -54,8 +55,9 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
     }
 
     @Override
-    public ResponseEntity findScheduleById(Long id) {
-        return null;
+    public Optional<Schedule> findScheduleById(Long id) {
+        List<Schedule> result = jdbcTemplate.query("select * from schedule where id = ?", scheduleRowMapperV2(), id);
+        return result.stream().findAny();
     }
 
     @Override
@@ -73,6 +75,21 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository{
             @Override
             public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new ScheduleResponseDto(
+                        rs.getLong("id"),
+                        rs.getString("user"),
+                        rs.getString("todo"),
+                        rs.getTimestamp("createDate").toLocalDateTime(),
+                        rs.getTimestamp("updateDate").toLocalDateTime()
+                );
+            }
+        };
+    }
+
+    private RowMapper<Schedule> scheduleRowMapperV2() {
+        return new RowMapper<Schedule>() {
+            @Override
+            public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Schedule(
                         rs.getLong("id"),
                         rs.getString("user"),
                         rs.getString("todo"),

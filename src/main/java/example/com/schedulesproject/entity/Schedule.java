@@ -26,6 +26,14 @@ public class Schedule {
         this.updateDate = updateDate;
     }
 
+    public Schedule(Long scheduleId, String userId, String todo, LocalDateTime createDate, LocalDateTime updateDate) {
+        this.scheduleId = scheduleId;
+        this.userId = userId;
+        this.todo = todo;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
+
     public void update(ScheduleRequestDto requestDto) {
         if (requestDto.getUserId() != null) {
             this.userId = requestDto.getUserId();
