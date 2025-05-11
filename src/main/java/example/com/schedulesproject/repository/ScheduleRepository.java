@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ScheduleRepository {
-    Schedule saveSchedule(Schedule schedule);
+    ScheduleResponseDto saveSchedule(Schedule schedule);
 
     List<ScheduleResponseDto> findAllSchedules();
 

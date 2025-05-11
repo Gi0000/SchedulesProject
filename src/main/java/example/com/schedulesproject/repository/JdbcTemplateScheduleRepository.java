@@ -1,0 +1,67 @@
+package example.com.schedulesproject.repository;
+
+import example.com.schedulesproject.dto.ScheduleRequestDto;
+import example.com.schedulesproject.dto.ScheduleResponseDto;
+import example.com.schedulesproject.entity.Schedule;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public class JdbcTemplateScheduleRepository implements ScheduleRepository{
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcTemplateScheduleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public ScheduleResponseDto saveSchedule(Schedule schedule) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("id");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("user", schedule.getUserId());
+        parameters.put("todo", schedule.getTodo());
+        parameters.put("password", schedule.getPassword());
+        parameters.put("createDate", schedule.getCreateDate());
+        parameters.put("updateDate", schedule.getUpdateDate());
+
+        // 저장 후 생성된 key값을 Number 타입으로 반환하는 메서드
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+
+        return new ScheduleResponseDto(
+                key.longValue(),
+                schedule.getUserId(),
+                schedule.getTodo(),
+                schedule.getCreateDate(),
+                schedule.getUpdateDate());
+    }
+
+    @Override
+    public List<ScheduleResponseDto> findAllSchedules() {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity findScheduleById(Long id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity updateScheduleById(Long id, ScheduleRequestDto requestDto) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity deleteScheduleById(Long id, Map<String, String> passwordRequest) {
+        return null;
+    }
+}

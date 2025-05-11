@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Schedule {
 
-    @Setter
     private Long scheduleId;
     private String userId;
     private String todo;

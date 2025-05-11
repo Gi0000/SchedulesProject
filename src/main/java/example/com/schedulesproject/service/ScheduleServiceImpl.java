@@ -31,9 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService{
                 LocalDateTime.now()
         );
 
-        Schedule savedSchedule = scheduleRepository.saveSchedule(schedule);
-
-        return new ScheduleResponseDto(savedSchedule);
+        return scheduleRepository.saveSchedule(schedule);
     }
 
     @Override
